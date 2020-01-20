@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TehGM.PrntScBrowser.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="TehGM's Prnt.sc Browser" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30px"/>
+        </Grid.RowDefinitions>
 
+        <Image x:Name="ImageBox" Grid.Row="0" Stretch="Fill"/>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <TextBlock Text="Screenshot ID" FontSize="20px" />
+            <TextBox x:Name="ScreenshotIdBox" FontSize="20px" MinWidth="100px" MaxLength="6" />
+            <Button FontSize="20px" MinWidth="50px" x:Name="GoToIdButton" Click="GoToIdButton_Click">Go</Button>
+            <Button FontSize="20px" x:Name="GoPreviousIdButton" Click="GoPreviousIdButton_Click">🡄</Button>
+            <Button FontSize="20px" x:Name="GoNextIdButton" Click="GoNextIdButton_Click">🡆</Button>
+        </StackPanel>
     </Grid>
 </Window>

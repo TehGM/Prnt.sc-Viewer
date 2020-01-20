@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace TehGM.PrntScBrowser.Core
+namespace TehGM.PrntScBrowser
 {
     public struct ScreenshotID : IEquatable<ScreenshotID>, IComparable<ScreenshotID>
     {
