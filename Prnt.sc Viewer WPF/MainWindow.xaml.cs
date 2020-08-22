@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -14,7 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace TehGM.PrntScViewer.WPF
 {
@@ -24,6 +25,7 @@ namespace TehGM.PrntScViewer.WPF
     public partial class MainWindow : Window
     {
         private Screenshot _currentScreenshot;
+        private string CurrentScreenshotURL => $"https://prnt.sc/{this._currentScreenshot.ID}";
 
         public MainWindow()
         {
@@ -71,12 +73,49 @@ namespace TehGM.PrntScViewer.WPF
         private void StartLoading()
         {
             this.LoadingSpinner.Visibility = Visibility.Visible;
-            this.ScreenshotIdBox.IsReadOnly = true;
+            this.ScreenshotIdBox.IsEnabled = false;
+            this.GoNextIdButton.IsEnabled = false;
+            this.GoPreviousIdButton.IsEnabled = false;
+            this.GoToIdButton.IsEnabled = false;
         }
         private void StopLoading()
         {
             this.LoadingSpinner.Visibility = Visibility.Collapsed;
-            this.ScreenshotIdBox.IsReadOnly = false;
+            this.ScreenshotIdBox.IsEnabled = true;
+            this.GoNextIdButton.IsEnabled = true;
+            this.GoPreviousIdButton.IsEnabled = true;
+            this.GoToIdButton.IsEnabled = true;
+        }
+
+        private async void ImageBox_SaveImage_Click(object sender, RoutedEventArgs e)
+        {
+            this.StartLoading();
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.FileName = this._currentScreenshot.FileName;
+            string ext = Path.GetExtension(this._currentScreenshot.FileName);
+            saveFileDialog.Filter = $"Image File|*{ext}";
+            saveFileDialog.DefaultExt = ext;
+            if (saveFileDialog.ShowDialog(this) == true)
+                await File.WriteAllBytesAsync(saveFileDialog.FileName, this._currentScreenshot.Data);
+            this.StopLoading();
+        }
+
+        private void ImageBox_CopyImage_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetImage((BitmapImage)this.ImageBox.Source);
+        }
+
+        private void ImageBox_CopyLink_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(CurrentScreenshotURL);
+        }
+
+        private void ImageBox_OpenBrowser_Click(object sender, RoutedEventArgs e)
+        {
+            using Process prc = new Process();
+            prc.StartInfo.FileName = CurrentScreenshotURL;
+            prc.StartInfo.UseShellExecute = true;
+            prc.Start();
         }
     }
 }
