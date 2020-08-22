@@ -47,8 +47,9 @@ namespace TehGM.PrntScViewer.WPF
         private async void GoToIdButton_Click(object sender, RoutedEventArgs e)
         {
             if (!ScreenshotID.Validate(ScreenshotIdBox.Text))
-                this.WriteStatusError("Incorrect Screenshot ID.");
-            await DisplayImageAsync(new ScreenshotID(ScreenshotIdBox.Text));
+                this.WriteStatusError("Incorrect Screenshot ID.", true);
+            else
+                await DisplayImageAsync(new ScreenshotID(ScreenshotIdBox.Text));
         }
 
         private async void GoPreviousIdButton_Click(object sender, RoutedEventArgs e)
@@ -111,18 +112,28 @@ namespace TehGM.PrntScViewer.WPF
         private async void ImageBox_SaveImage_Click(object sender, RoutedEventArgs e)
         {
             this.StartLoading();
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.FileName = this._currentScreenshot.FileName;
-            string ext = Path.GetExtension(this._currentScreenshot.FileName);
-            saveFileDialog.Filter = $"Image File|*{ext}";
-            saveFileDialog.DefaultExt = ext;
-            if (saveFileDialog.ShowDialog(this) == true)
+            try
             {
-                this.WriteStatusNormal($"Saving {saveFileDialog.FileName}...");
-                await File.WriteAllBytesAsync(saveFileDialog.FileName, this._currentScreenshot.Data);
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.FileName = this._currentScreenshot.FileName;
+                string ext = Path.GetExtension(this._currentScreenshot.FileName);
+                saveFileDialog.Filter = $"Image File|*{ext}";
+                saveFileDialog.DefaultExt = ext;
+                if (saveFileDialog.ShowDialog(this) == true)
+                {
+                    this.WriteStatusNormal($"Saving {saveFileDialog.FileName}...");
+                    await File.WriteAllBytesAsync(saveFileDialog.FileName, this._currentScreenshot.Data);
+                }
+                this.WriteStatusNormal("Done.");
             }
-            this.WriteStatusNormal("Done.");
-            this.StopLoading();
+            catch
+            {
+                this.WriteStatusError("Error saving image.", true);
+            }
+            finally
+            {
+                this.StopLoading();
+            }
         }
 
         private void ImageBox_CopyImage_Click(object sender, RoutedEventArgs e)
@@ -145,18 +156,20 @@ namespace TehGM.PrntScViewer.WPF
             prc.Start();
         }
 
-        private void WriteStatusNormal(string text)
-            => WriteStatus(text, _defaultForegroundBrush);
-        private void WriteStatusError(string text)
-            => WriteStatus(text, _errorBrush);
+        private void WriteStatusNormal(string text, bool popup = false, MessageBoxImage image = MessageBoxImage.Information)
+            => WriteStatus(text, _defaultForegroundBrush, popup, image);
+        private void WriteStatusError(string text, bool popup = false, MessageBoxImage image = MessageBoxImage.Error)
+            => WriteStatus(text, _errorBrush, popup, image);
 
-        private void WriteStatus(string text, Color color)
-            => this.WriteStatus(text, new SolidColorBrush(color));
+        private void WriteStatus(string text, Color color, bool popup = false, MessageBoxImage image = MessageBoxImage.Information)
+            => this.WriteStatus(text, new SolidColorBrush(color), popup, image);
 
-        private void WriteStatus(string text, Brush color)
+        private void WriteStatus(string text, Brush color, bool popup = false, MessageBoxImage image = MessageBoxImage.Information)
         {
             this.StatusTextBox.Text = text;
             this.StatusTextBox.Foreground = color;
+            if (popup)
+                MessageBox.Show(this, text, this.Title, MessageBoxButton.OK, image);
         }
 
         private void ScreenshotIdBox_TextChanged(object sender, TextChangedEventArgs e)
