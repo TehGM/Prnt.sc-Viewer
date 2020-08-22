@@ -11,11 +11,19 @@ namespace TehGM.PrntScViewer
         public int NumericalValue { get; }
         private readonly string _stringValue;
 
-        public ScreenshotID(string stringValue)
+        public ScreenshotID(string value)
         {
-            this._stringValue = stringValue.ToLowerInvariant();
-            this.NumericalValue = ToInt32(stringValue);
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Value of Screenshot ID is required", nameof(value));
+            if (value.Any(c => !_charset.Contains(c)))
+                throw new ArgumentException("Screenshot ID contains invalid character(s)", nameof(value));
+
+            this._stringValue = value.ToLowerInvariant();
+            this.NumericalValue = ToInt32(value);
         }
+
+        public static bool Validate(string value)
+            => !string.IsNullOrWhiteSpace(value) && value.All(c => _charset.Contains(c));
 
         #region Conversion
         public override string ToString()

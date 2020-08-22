@@ -25,12 +25,20 @@
         </Image>
         <fa:ImageAwesome x:Name="LoadingSpinner" Grid.Row="0" Icon="CircleOutlineNotch" Spin="True" SpinDuration="3" MaxHeight="200px" Foreground="#BF808080" Visibility="Collapsed"/>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
-            <TextBlock Text="Screenshot ID" FontSize="20px" Margin="5,0,15,0"/>
-            <TextBox x:Name="ScreenshotIdBox" FontSize="20px" MinWidth="100px" MaxLength="9" />
-            <Button FontSize="20px" MinWidth="50px" x:Name="GoToIdButton" Click="GoToIdButton_Click" Margin="5,0">Go</Button>
-            <Button FontSize="20px" x:Name="GoPreviousIdButton" Click="GoPreviousIdButton_Click" Margin="5,0" Padding="10,0" MinWidth="35">🡄</Button>
-            <Button FontSize="20px" x:Name="GoNextIdButton" Click="GoNextIdButton_Click" Margin="5,0" Padding="10,0" MinWidth="35">🡆</Button>
-        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="0">
+                <TextBlock Text="Screenshot ID" FontSize="20px" Margin="5,0,15,0"/>
+                <TextBox x:Name="ScreenshotIdBox" FontSize="20px" MinWidth="100px" MaxLength="9" TextChanged="ScreenshotIdBox_TextChanged" />
+                <fa:FontAwesome x:Name="ScreenshotInvalidWarning" FontSize="20px" VerticalAlignment="Center" Visibility="Collapsed" Foreground="Red" Icon="Warning" />
+                <Button FontSize="20px" MinWidth="50px" x:Name="GoToIdButton" Click="GoToIdButton_Click" Margin="5,0">Go</Button>
+                <Button FontSize="20px" x:Name="GoPreviousIdButton" Click="GoPreviousIdButton_Click" Margin="5,0" Padding="10,0" MinWidth="35">🡄</Button>
+                <Button FontSize="20px" x:Name="GoNextIdButton" Click="GoNextIdButton_Click" Margin="5,0" Padding="10,0" MinWidth="35">🡆</Button>
+            </StackPanel>
+            <TextBlock x:Name="StatusTextBox" FontSize="12px" MinWidth="0" Margin="15,0,2,2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="1" />
+        </Grid>
     </Grid>
 </Window>
