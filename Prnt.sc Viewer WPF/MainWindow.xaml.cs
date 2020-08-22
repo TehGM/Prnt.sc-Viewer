@@ -52,26 +52,6 @@ namespace TehGM.PrntScViewer.WPF
                 await DisplayImageAsync(new ScreenshotID(ScreenshotIdBox.Text));
         }
 
-        private async void GoPreviousIdButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_currentScreenshot == null)
-            {
-                this.WriteStatusError("Please load a screenshot first!", true);
-                return;
-            }
-            await DisplayImageAsync(_currentScreenshot.ID.Decrement());
-        }
-
-        private async void GoNextIdButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_currentScreenshot == null)
-            {
-                this.WriteStatusError("Please load a screenshot first!", true);
-                return;
-            }
-            await DisplayImageAsync(_currentScreenshot.ID.Increment());
-        }
-
         private async Task DisplayImageAsync(ScreenshotID id)
         {
             this.StartLoading();
@@ -121,49 +101,6 @@ namespace TehGM.PrntScViewer.WPF
             this.GoPreviousIdButton.IsEnabled = true;
             this.GoToIdButton.IsEnabled = true;
             this.ValidateScreenshotIdInput();
-        }
-
-        private async void ImageBox_SaveImage_Click(object sender, RoutedEventArgs e)
-        {
-            if (_currentScreenshot == null)
-            {
-                this.WriteStatusError("Please load a screenshot first!", true);
-                return;
-            }
-            this.StartLoading();
-            try
-            {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.FileName = this._currentScreenshot.FileName;
-                string ext = Path.GetExtension(this._currentScreenshot.FileName);
-                saveFileDialog.Filter = $"Image File|*{ext}";
-                saveFileDialog.DefaultExt = ext;
-                if (saveFileDialog.ShowDialog(this) == true)
-                {
-                    this.WriteStatusNormal($"Saving {saveFileDialog.FileName}...");
-                    await File.WriteAllBytesAsync(saveFileDialog.FileName, this._currentScreenshot.Data);
-                }
-                this.WriteStatusNormal("Done.");
-            }
-            catch
-            {
-                this.WriteStatusError("Error saving image.", true);
-            }
-            finally
-            {
-                this.StopLoading();
-            }
-        }
-
-        private void ImageBox_CopyImage_Click(object sender, RoutedEventArgs e)
-        {
-            if (_currentScreenshot == null)
-            {
-                this.WriteStatusError("Please load a screenshot first!", true);
-                return;
-            }
-            Clipboard.SetImage((BitmapImage)this.ImageBox.Source);
-            this.WriteStatusNormal("Image copied!");
         }
 
         private void ImageBox_CopyLink_Click(object sender, RoutedEventArgs e)
@@ -239,9 +176,72 @@ namespace TehGM.PrntScViewer.WPF
             }
         }
 
-        private async void ScreenshotID_Reset_Click(object sender, RoutedEventArgs e)
+        private async void Command_Reset(object sender, ExecutedRoutedEventArgs e)
         {
             await ResetScreenshotIDAsync();
+        }
+
+        private async void Command_Save(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (_currentScreenshot == null)
+            {
+                this.WriteStatusError("Please load a screenshot first!", true);
+                return;
+            }
+            this.StartLoading();
+            try
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.FileName = this._currentScreenshot.FileName;
+                string ext = Path.GetExtension(this._currentScreenshot.FileName);
+                saveFileDialog.Filter = $"Image File|*{ext}";
+                saveFileDialog.DefaultExt = ext;
+                if (saveFileDialog.ShowDialog(this) == true)
+                {
+                    this.WriteStatusNormal($"Saving {saveFileDialog.FileName}...");
+                    await File.WriteAllBytesAsync(saveFileDialog.FileName, this._currentScreenshot.Data);
+                }
+                this.WriteStatusNormal("Done.");
+            }
+            catch
+            {
+                this.WriteStatusError("Error saving image.", true);
+            }
+            finally
+            {
+                this.StopLoading();
+            }
+        }
+
+        private void Command_Copy(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (_currentScreenshot == null)
+            {
+                this.WriteStatusError("Please load a screenshot first!", true);
+                return;
+            }
+            Clipboard.SetImage((BitmapImage)this.ImageBox.Source);
+            this.WriteStatusNormal("Image copied!");
+        }
+
+        private async void Command_Next(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (_currentScreenshot == null)
+            {
+                this.WriteStatusError("Please load a screenshot first!", true);
+                return;
+            }
+            await DisplayImageAsync(_currentScreenshot.ID.Increment());
+        }
+
+        private async void Command_Previous(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (_currentScreenshot == null)
+            {
+                this.WriteStatusError("Please load a screenshot first!", true);
+                return;
+            }
+            await DisplayImageAsync(_currentScreenshot.ID.Decrement());
         }
     }
 }

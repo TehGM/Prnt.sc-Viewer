@@ -41,12 +41,21 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type MenuItem}">
-                        <Border x:Name="Bd" Padding="17,5" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Uid="Border_38">
-                            <ContentPresenter x:Name="ContentPresenter"  Content="{TemplateBinding Header}" Grid.Column="1" ContentSource="Header" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Uid="ContentPresenter_33"/>
+                        <Border x:Name="Border" BorderThickness="0" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Padding="17,5" Width="{TemplateBinding Width}" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Shortcut" />
+                                    <ColumnDefinition Width="13" />
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter x:Name="HeaderHost" Grid.Column="0" ContentSource="Header" RecognizesAccessKey="True" SnapsToDevicePixels="True" />
+                                <TextBlock x:Name="InputGestureText" Grid.Column="1" Text="{TemplateBinding InputGestureText}" Margin="5,2,0,2" DockPanel.Dock="Right" Background="{TemplateBinding Background}"  />
+                            </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsHighlighted" Value="True">
-                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource DefaultHoverBrush}"/>
+                                <Setter Property="Background" TargetName="Border" Value="{DynamicResource DefaultHoverBrush}"/>
+                                <Setter Property="Background" TargetName="InputGestureText" Value="{DynamicResource DefaultHoverBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

@@ -7,6 +7,23 @@
         xmlns:local="clr-namespace:TehGM.PrntScViewer.WPF"
         mc:Ignorable="d"
         Title="TehGM's Prnt.sc Viewer" Height="450" Width="800" Loaded="Window_Loaded">
+    
+    <Window.CommandBindings>
+        <CommandBinding Command="local:Commands.Save" Executed="Command_Save" />
+        <CommandBinding Command="local:Commands.Copy" Executed="Command_Copy" />
+        <CommandBinding Command="local:Commands.Reset" Executed="Command_Reset" />
+        <CommandBinding Command="local:Commands.Next" Executed="Command_Next" />
+        <CommandBinding Command="local:Commands.Previous" Executed="Command_Previous" />
+    </Window.CommandBindings>
+
+    <Window.InputBindings>
+        <KeyBinding Command="local:Commands.Save" Key="S" Modifiers="Ctrl" Gesture="Ctrl+S" />
+        <KeyBinding Command="local:Commands.Copy" Key="C" Modifiers="Ctrl" Gesture="Ctrl+C" />
+        <KeyBinding Command="local:Commands.Reset" Key="R" Modifiers="Ctrl" Gesture="Ctrl+R" />
+        <KeyBinding Command="local:Commands.Next" Key="Right" Gesture="Right" />
+        <KeyBinding Command="local:Commands.Previous" Key="Left" Gesture="Left" />
+    </Window.InputBindings>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -16,8 +33,8 @@
         <Image x:Name="ImageBox" Grid.Row="0" Stretch="Uniform">
             <Image.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Save Image" Click="ImageBox_SaveImage_Click"/>
-                    <MenuItem Header="Copy Image" Click="ImageBox_CopyImage_Click"/>
+                    <MenuItem Header="Save Image" Command="{x:Static local:Commands.Save}" CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" InputGestureText="Ctrl+S"/>
+                    <MenuItem Header="Copy Image" Command="{x:Static local:Commands.Copy}" CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" InputGestureText="Ctrl+C"/>
                     <MenuItem Header="Copy Link" Click="ImageBox_CopyLink_Click"/>
                     <MenuItem Header="Open in Browser" Click="ImageBox_OpenBrowser_Click" />
                 </ContextMenu>
@@ -35,12 +52,14 @@
                 <TextBox x:Name="ScreenshotIdBox" FontSize="20px" MinWidth="100px" MaxLength="9" TextChanged="ScreenshotIdBox_TextChanged" />
                 <fa:FontAwesome x:Name="ScreenshotInvalidWarning" FontSize="20px" VerticalAlignment="Center" Visibility="Collapsed" Foreground="Red" Icon="Warning" />
                 <Button FontSize="20px" MinWidth="50px" x:Name="GoToIdButton" Click="GoToIdButton_Click" Margin="5,0">Go</Button>
-                <Button FontSize="20px" x:Name="GoPreviousIdButton" Click="GoPreviousIdButton_Click" Margin="5,0" Padding="10,0" MinWidth="35">🡄</Button>
-                <Button FontSize="20px" x:Name="GoNextIdButton" Click="GoNextIdButton_Click" Margin="5,0" Padding="10,0" MinWidth="35">🡆</Button>
+                <Button FontSize="20px" x:Name="GoPreviousIdButton" Margin="5,0" Padding="10,0" MinWidth="35" Content="🡄" 
+                        Command="{x:Static local:Commands.Previous}" CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                <Button FontSize="20px" x:Name="GoNextIdButton" Margin="5,0" Padding="10,0" MinWidth="35" Content="🡆" 
+                        Command="{x:Static local:Commands.Next}" CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
 
                 <StackPanel.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Reset" Click="ScreenshotID_Reset_Click" />
+                        <MenuItem Header="Reset" Command="{x:Static local:Commands.Reset}" CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" InputGestureText="Ctrl+R" />
                     </ContextMenu>
                 </StackPanel.ContextMenu>
             </StackPanel>
