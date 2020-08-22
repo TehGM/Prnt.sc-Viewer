@@ -6,6 +6,13 @@
     <RootNamespace>TehGM.PrntScViewer.WPF</RootNamespace>
     <UseWPF>true</UseWPF>
     <AssemblyName>Prnt.sc Viewer</AssemblyName>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Authors>TehGM</Authors>
+    <Copyright>Copyright (c) 2020 TehGM</Copyright>
+    <PackageProjectUrl>https://github.com/TehGM/Prnt.sc-Viewer</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TehGM/Prnt.sc-Viewer</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageId>TehGM.PrntScViewer</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
