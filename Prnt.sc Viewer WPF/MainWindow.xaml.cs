@@ -14,7 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TehGM.PrntScViewer;
 
 namespace TehGM.PrntScViewer.WPF
 {
@@ -32,6 +31,17 @@ namespace TehGM.PrntScViewer.WPF
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0");
+                int statsScreenshotID = await client.DownloadScreenshotsUploadedCountAsync();
+                this.CurrentScreenshotID = (ScreenshotID)statsScreenshotID;
+            }
+            await DisplayImage(CurrentScreenshotID);
         }
 
         private async void GoToIdButton_Click(object sender, RoutedEventArgs e)
