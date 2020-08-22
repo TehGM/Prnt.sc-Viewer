@@ -1,10 +1,8 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -47,6 +45,8 @@ namespace TehGM.PrntScBrowser
                 if (string.IsNullOrWhiteSpace(metaImageUrl))
                     throw new KeyNotFoundException("No raw image URL found in Prnt.sc's response");
 
+                if (metaImageUrl.StartsWith("//"))
+                    metaImageUrl = metaImageUrl.Insert(0, "https:");
                 return new Uri(metaImageUrl);
             }
         }
