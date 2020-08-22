@@ -27,21 +27,18 @@ namespace TehGM.PrntScViewer.WPF
         private Screenshot _currentScreenshot;
         private string CurrentScreenshotURL => $"https://prnt.sc/{this._currentScreenshot.ID}";
 
-        private readonly Brush _errorBrush;
-        private readonly Brush _defaultForegroundBrush;
         private readonly Brush _normalScreenshotIdBoxBorderBrush;
         public MainWindow()
         {
             InitializeComponent();
-            this._errorBrush = new SolidColorBrush(Color.FromRgb(255, 0, 0));
             this._normalScreenshotIdBoxBorderBrush = ScreenshotIdBox.BorderBrush;
-            this._defaultForegroundBrush = (Brush)FindResource("DefaultForegroundBrush");
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.ValidateScreenshotIdInput();
-            await ResetScreenshotIDAsync();
+            if (App.Settings.ResetOnLoad)
+                await ResetScreenshotIDAsync();
         }
 
         private async void GoToIdButton_Click(object sender, RoutedEventArgs e)
@@ -128,9 +125,9 @@ namespace TehGM.PrntScViewer.WPF
         }
 
         private void WriteStatusNormal(string text, bool popup = false, MessageBoxImage image = MessageBoxImage.Information)
-            => WriteStatus(text, _defaultForegroundBrush, popup, image);
+            => WriteStatus(text, App.DefaultForegroundBrush, popup, image);
         private void WriteStatusError(string text, bool popup = false, MessageBoxImage image = MessageBoxImage.Error)
-            => WriteStatus(text, _errorBrush, popup, image);
+            => WriteStatus(text, App.ErrorBrush, popup, image);
 
         private void WriteStatus(string text, Color color, bool popup = false, MessageBoxImage image = MessageBoxImage.Information)
             => this.WriteStatus(text, new SolidColorBrush(color), popup, image);
@@ -149,9 +146,9 @@ namespace TehGM.PrntScViewer.WPF
         private bool ValidateScreenshotIdInput()
         {
             bool isValid = ScreenshotID.Validate(this.ScreenshotIdBox.Text);
-            this.ScreenshotIdBox.BorderBrush = isValid ? _normalScreenshotIdBoxBorderBrush : _errorBrush;
+            this.ScreenshotIdBox.BorderBrush = isValid ? _normalScreenshotIdBoxBorderBrush : App.ErrorBrush;
             this.GoToIdButton.IsEnabled = isValid;
-            this.GoToIdButton.Foreground = isValid ? _defaultForegroundBrush : _errorBrush;
+            this.GoToIdButton.Foreground = isValid ? App.DefaultForegroundBrush : App.ErrorBrush;
             this.ScreenshotInvalidWarning.Visibility = isValid ? Visibility.Collapsed : Visibility.Visible;
             return isValid;
         }
@@ -242,6 +239,12 @@ namespace TehGM.PrntScViewer.WPF
                 return;
             }
             await DisplayImageAsync(_currentScreenshot.ID.Decrement());
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow settingsWindow = new SettingsWindow();
+            settingsWindow.ShowDialog();
         }
     }
 }

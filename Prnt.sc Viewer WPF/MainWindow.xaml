@@ -63,7 +63,12 @@
                     </ContextMenu>
                 </StackPanel.ContextMenu>
             </StackPanel>
-            <TextBlock x:Name="StatusTextBox" FontSize="12px" MinWidth="0" Margin="15,0,2,2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="1" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock x:Name="StatusTextBox" FontSize="12px" MinWidth="0" Margin="15,0,2,2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="1" />
+                <Button Grid.Column="1" Margin="10,0" Width="30px" Click="SettingsButton_Click">
+                    <fa:FontAwesome Icon="Cog" FontSize="24px" VerticalAlignment="Center"/>
+                </Button>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>
