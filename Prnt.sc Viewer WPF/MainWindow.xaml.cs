@@ -53,10 +53,24 @@ namespace TehGM.PrntScViewer.WPF
         }
 
         private async void GoPreviousIdButton_Click(object sender, RoutedEventArgs e)
-            => await DisplayImageAsync(_currentScreenshot.ID.Decrement());
+        {
+            if (_currentScreenshot == null)
+            {
+                this.WriteStatusError("Please load a screenshot first!", true);
+                return;
+            }
+            await DisplayImageAsync(_currentScreenshot.ID.Decrement());
+        }
 
         private async void GoNextIdButton_Click(object sender, RoutedEventArgs e)
-            => await DisplayImageAsync(_currentScreenshot.ID.Increment());
+        {
+            if (_currentScreenshot == null)
+            {
+                this.WriteStatusError("Please load a screenshot first!", true);
+                return;
+            }
+            await DisplayImageAsync(_currentScreenshot.ID.Increment());
+        }
 
         private async Task DisplayImageAsync(ScreenshotID id)
         {
@@ -111,6 +125,11 @@ namespace TehGM.PrntScViewer.WPF
 
         private async void ImageBox_SaveImage_Click(object sender, RoutedEventArgs e)
         {
+            if (_currentScreenshot == null)
+            {
+                this.WriteStatusError("Please load a screenshot first!", true);
+                return;
+            }
             this.StartLoading();
             try
             {
@@ -138,18 +157,33 @@ namespace TehGM.PrntScViewer.WPF
 
         private void ImageBox_CopyImage_Click(object sender, RoutedEventArgs e)
         {
+            if (_currentScreenshot == null)
+            {
+                this.WriteStatusError("Please load a screenshot first!", true);
+                return;
+            }
             Clipboard.SetImage((BitmapImage)this.ImageBox.Source);
             this.WriteStatusNormal("Image copied!");
         }
 
         private void ImageBox_CopyLink_Click(object sender, RoutedEventArgs e)
         {
+            if (_currentScreenshot == null)
+            {
+                this.WriteStatusError("Please load a screenshot first!", true);
+                return;
+            }
             Clipboard.SetText(CurrentScreenshotURL);
             this.WriteStatusNormal("Image link copied!");
         }
 
         private void ImageBox_OpenBrowser_Click(object sender, RoutedEventArgs e)
         {
+            if (_currentScreenshot == null)
+            {
+                this.WriteStatusError("Please load a screenshot first!", true);
+                return;
+            }
             using Process prc = new Process();
             prc.StartInfo.FileName = CurrentScreenshotURL;
             prc.StartInfo.UseShellExecute = true;
