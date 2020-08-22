@@ -37,6 +37,12 @@
                 <Button FontSize="20px" MinWidth="50px" x:Name="GoToIdButton" Click="GoToIdButton_Click" Margin="5,0">Go</Button>
                 <Button FontSize="20px" x:Name="GoPreviousIdButton" Click="GoPreviousIdButton_Click" Margin="5,0" Padding="10,0" MinWidth="35">🡄</Button>
                 <Button FontSize="20px" x:Name="GoNextIdButton" Click="GoNextIdButton_Click" Margin="5,0" Padding="10,0" MinWidth="35">🡆</Button>
+
+                <StackPanel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Reset" Click="ScreenshotID_Reset_Click" />
+                    </ContextMenu>
+                </StackPanel.ContextMenu>
             </StackPanel>
             <TextBlock x:Name="StatusTextBox" FontSize="12px" MinWidth="0" Margin="15,0,2,2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="1" />
         </Grid>

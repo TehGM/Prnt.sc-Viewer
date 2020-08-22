@@ -41,22 +41,7 @@ namespace TehGM.PrntScViewer.WPF
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.ValidateScreenshotIdInput();
-            this.StartLoading();
-            try
-            {
-                HttpClient client = App.HttpClientCache.GetClient();
-                this.WriteStatusNormal("Requesting uploaded image count...");
-                int statsScreenshotID = await client.DownloadScreenshotsUploadedCountAsync();
-                await DisplayImageAsync((ScreenshotID)statsScreenshotID);
-            }
-            catch
-            {
-                this.WriteStatusError("Failed loading initial image.");
-            }
-            finally
-            {
-                this.StopLoading();
-            }
+            await ResetScreenshotIDAsync();
         }
 
         private async void GoToIdButton_Click(object sender, RoutedEventArgs e)
@@ -185,6 +170,31 @@ namespace TehGM.PrntScViewer.WPF
             this.GoToIdButton.Foreground = isValid ? _defaultForegroundBrush : _errorBrush;
             this.ScreenshotInvalidWarning.Visibility = isValid ? Visibility.Collapsed : Visibility.Visible;
             return isValid;
+        }
+
+        private async Task ResetScreenshotIDAsync()
+        {
+            this.StartLoading();
+            try
+            {
+                HttpClient client = App.HttpClientCache.GetClient();
+                this.WriteStatusNormal("Requesting uploaded image count...");
+                int statsScreenshotID = await client.DownloadScreenshotsUploadedCountAsync();
+                await DisplayImageAsync((ScreenshotID)statsScreenshotID);
+            }
+            catch
+            {
+                this.WriteStatusError("Failed loading initial image.");
+            }
+            finally
+            {
+                this.StopLoading();
+            }
+        }
+
+        private async void ScreenshotID_Reset_Click(object sender, RoutedEventArgs e)
+        {
+            await ResetScreenshotIDAsync();
         }
     }
 }
