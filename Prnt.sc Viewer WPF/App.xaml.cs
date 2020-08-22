@@ -13,5 +13,6 @@ namespace TehGM.PrntScViewer.WPF
     /// </summary>
     public partial class App : Application
     {
+        public static HttpClientCache HttpClientCache { get; } = new HttpClientCache(TimeSpan.FromMinutes(5));
     }
 }
