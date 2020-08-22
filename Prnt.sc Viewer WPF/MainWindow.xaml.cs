@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -22,11 +23,7 @@ namespace TehGM.PrntScViewer.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ScreenshotID CurrentScreenshotID
-        {
-            get => new ScreenshotID(ScreenshotIdBox.Text.Trim());
-            set => ScreenshotIdBox.Text = value;
-        }
+        private Screenshot _currentScreenshot;
 
         public MainWindow()
         {
@@ -35,34 +32,27 @@ namespace TehGM.PrntScViewer.WPF
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            StartLoading();
+            this.StartLoading();
             HttpClient client = App.HttpClientCache.GetClient();
             int statsScreenshotID = await client.DownloadScreenshotsUploadedCountAsync();
-            this.CurrentScreenshotID = (ScreenshotID)statsScreenshotID;
-            await DisplayImage(CurrentScreenshotID);
+            await DisplayImageAsync((ScreenshotID)statsScreenshotID);
         }
 
         private async void GoToIdButton_Click(object sender, RoutedEventArgs e)
-            => await DisplayImage(CurrentScreenshotID);
+            => await DisplayImageAsync(new ScreenshotID(ScreenshotIdBox.Text));
 
         private async void GoPreviousIdButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.CurrentScreenshotID--;
-            await DisplayImage(CurrentScreenshotID);
-        }
+            => await DisplayImageAsync(_currentScreenshot.ID.Decrement());
 
         private async void GoNextIdButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.CurrentScreenshotID++;
-            await DisplayImage(CurrentScreenshotID);
-        }
+            => await DisplayImageAsync(_currentScreenshot.ID.Increment());
 
-        private async Task DisplayImage(ScreenshotID id)
+        private async Task DisplayImageAsync(ScreenshotID id)
         {
-            StartLoading();
+            this.StartLoading();
             HttpClient client = App.HttpClientCache.GetClient();
-            byte[] imageBytes = await client.DownloadScreenshotBytesAsync(new ScreenshotID(id));
-            using (MemoryStream stream = new MemoryStream(imageBytes))
+            this._currentScreenshot = await client.DownloadScreenshotAsync(id);
+            using (MemoryStream stream = new MemoryStream(this._currentScreenshot.Data))
             {
                 BitmapImage image = new BitmapImage();
                 image.BeginInit();
@@ -74,7 +64,8 @@ namespace TehGM.PrntScViewer.WPF
                 image.Freeze();
                 ImageBox.Source = image;
             }
-            StopLoading();
+            this.ScreenshotIdBox.Text = this._currentScreenshot.ID.ToString();
+            this.StopLoading();
         }
 
         private void StartLoading()

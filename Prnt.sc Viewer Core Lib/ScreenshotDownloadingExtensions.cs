@@ -10,6 +10,17 @@ namespace TehGM.PrntScViewer
 {
     public static class ScreenshotDownloadingExtensions
     {
+        public static async Task<Screenshot> DownloadScreenshotAsync(this HttpClient client, ScreenshotID screenshotID, CancellationToken cancellationToken = default)
+        {
+            Uri screenshotUri = await GetImageUriAsync(client, screenshotID, cancellationToken);
+
+            using (HttpResponseMessage screenshotResponse = await client.GetAsync(screenshotUri, cancellationToken))
+            {
+                byte[] bytes = await screenshotResponse.Content.ReadAsByteArrayAsync();
+                return new Screenshot(screenshotID, bytes, screenshotUri.ToString());
+            }
+        }
+
         public static async Task<byte[]> DownloadScreenshotBytesAsync(this HttpClient client, ScreenshotID screenshotID, CancellationToken cancellationToken = default)
         {
             Uri screenshotUri = await GetImageUriAsync(client, screenshotID, cancellationToken);
