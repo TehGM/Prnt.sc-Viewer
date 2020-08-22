@@ -36,7 +36,6 @@ namespace TehGM.PrntScViewer.WPF
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             HttpClient client = App.HttpClientCache.GetClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0");
             int statsScreenshotID = await client.DownloadScreenshotsUploadedCountAsync();
             this.CurrentScreenshotID = (ScreenshotID)statsScreenshotID;
             await DisplayImage(CurrentScreenshotID);
@@ -60,7 +59,6 @@ namespace TehGM.PrntScViewer.WPF
         private async Task DisplayImage(ScreenshotID id)
         {
             HttpClient client = App.HttpClientCache.GetClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0");
             byte[] imageBytes = await client.DownloadScreenshotBytesAsync(new ScreenshotID(id));
             using (MemoryStream stream = new MemoryStream(imageBytes))
             {
