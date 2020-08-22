@@ -80,8 +80,20 @@ namespace TehGM.PrntScViewer
         {
             if (value[index] == _charset.Last())
             {
-                IncrementAtIndex(index - 1, ref value);
-                value[index] = _charset.First();
+                if (index > 0)
+                {
+                    IncrementAtIndex(index - 1, ref value);
+                    value[index] = _charset.First();
+                }
+                else
+                {
+                    value[index] = _charset.First();
+                    char[] newValue = new char[value.Length + 1];
+                    // skip first one, as IDs starting with 0 error out
+                    newValue[0] = _charset[1];
+                    Array.Copy(value, 0, newValue, 1, value.Length);
+                    value = newValue;
+                }
             }
             else
                 value[index] = _charset[_charset.IndexOf(value[index]) + 1];
