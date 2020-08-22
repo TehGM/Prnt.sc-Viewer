@@ -4,6 +4,38 @@
              xmlns:local="clr-namespace:TehGM.PrntScViewer.WPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Color x:Key="DefaultBorderColor">#2D2D30</Color>
+        <SolidColorBrush x:Key="DefaultBorderBrush" Color="{DynamicResource DefaultBorderColor}"/>
+        <Color x:Key="DefaultBackgroundColor">#232323</Color>
+        <SolidColorBrush x:Key="DefaultBackgroundBrush" Color="{DynamicResource DefaultBackgroundColor}"/>
+        <Color x:Key="DefaultHoverColor">#333333</Color>
+        <SolidColorBrush x:Key="DefaultHoverBrush" Color="{DynamicResource DefaultHoverColor}"/>
+        <Color x:Key="DefaultForegroundColor">White</Color>
+        <SolidColorBrush x:Key="DefaultForegroundBrush" Color="{DynamicResource DefaultForegroundColor}"/>
+
+        <Style x:Key="DefaultColorScheme" TargetType="{x:Type Control}">
+            <Setter Property="Background" Value="{DynamicResource DefaultBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource DefaultForegroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource DefaultBorderBrush}" />
+        </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource DefaultColorScheme}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource DefaultHoverBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Window" BasedOn="{StaticResource DefaultColorScheme}"/>
+        <Style TargetType="TextBox" BasedOn="{StaticResource DefaultColorScheme}"/>
     </Application.Resources>
 </Application>

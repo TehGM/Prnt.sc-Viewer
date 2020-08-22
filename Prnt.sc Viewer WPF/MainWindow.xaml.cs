@@ -35,7 +35,7 @@ namespace TehGM.PrntScViewer.WPF
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ShowLoadingSpinner();
+            StartLoading();
             HttpClient client = App.HttpClientCache.GetClient();
             int statsScreenshotID = await client.DownloadScreenshotsUploadedCountAsync();
             this.CurrentScreenshotID = (ScreenshotID)statsScreenshotID;
@@ -47,19 +47,19 @@ namespace TehGM.PrntScViewer.WPF
 
         private async void GoPreviousIdButton_Click(object sender, RoutedEventArgs e)
         {
-            CurrentScreenshotID--;
+            this.CurrentScreenshotID--;
             await DisplayImage(CurrentScreenshotID);
         }
 
         private async void GoNextIdButton_Click(object sender, RoutedEventArgs e)
         {
-            CurrentScreenshotID++;
+            this.CurrentScreenshotID++;
             await DisplayImage(CurrentScreenshotID);
         }
 
         private async Task DisplayImage(ScreenshotID id)
         {
-            ShowLoadingSpinner();
+            StartLoading();
             HttpClient client = App.HttpClientCache.GetClient();
             byte[] imageBytes = await client.DownloadScreenshotBytesAsync(new ScreenshotID(id));
             using (MemoryStream stream = new MemoryStream(imageBytes))
@@ -74,12 +74,18 @@ namespace TehGM.PrntScViewer.WPF
                 image.Freeze();
                 ImageBox.Source = image;
             }
-            HideLoadingSpinner();
+            StopLoading();
         }
 
-        private void ShowLoadingSpinner()
-            => this.LoadingSpinner.Visibility = Visibility.Visible;
-        private void HideLoadingSpinner()
-            => this.LoadingSpinner.Visibility = Visibility.Collapsed;
+        private void StartLoading()
+        {
+            this.LoadingSpinner.Visibility = Visibility.Visible;
+            this.ScreenshotIdBox.IsReadOnly = true;
+        }
+        private void StopLoading()
+        {
+            this.LoadingSpinner.Visibility = Visibility.Collapsed;
+            this.ScreenshotIdBox.IsReadOnly = false;
+        }
     }
 }

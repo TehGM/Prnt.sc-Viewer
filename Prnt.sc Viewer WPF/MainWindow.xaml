@@ -16,12 +16,12 @@
         <Image x:Name="ImageBox" Grid.Row="0" Stretch="Uniform"/>
         <fa:ImageAwesome x:Name="LoadingSpinner" Grid.Row="0" Icon="CircleOutlineNotch" Spin="True" SpinDuration="3" MaxHeight="200px" Foreground="#BF808080" Visibility="Collapsed"/>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <TextBlock Text="Screenshot ID" FontSize="20px" />
-            <TextBox x:Name="ScreenshotIdBox" FontSize="20px" MinWidth="100px" MaxLength="6" />
-            <Button FontSize="20px" MinWidth="50px" x:Name="GoToIdButton" Click="GoToIdButton_Click">Go</Button>
-            <Button FontSize="20px" x:Name="GoPreviousIdButton" Click="GoPreviousIdButton_Click">🡄</Button>
-            <Button FontSize="20px" x:Name="GoNextIdButton" Click="GoNextIdButton_Click">🡆</Button>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
+            <TextBlock Text="Screenshot ID" FontSize="20px" Margin="5,0,15,0"/>
+            <TextBox x:Name="ScreenshotIdBox" FontSize="20px" MinWidth="100px" MaxLength="9" />
+            <Button FontSize="20px" MinWidth="50px" x:Name="GoToIdButton" Click="GoToIdButton_Click" Margin="5,0">Go</Button>
+            <Button FontSize="20px" x:Name="GoPreviousIdButton" Click="GoPreviousIdButton_Click" Margin="5,0" Padding="10,0" MinWidth="35">🡄</Button>
+            <Button FontSize="20px" x:Name="GoNextIdButton" Click="GoNextIdButton_Click" Margin="5,0" Padding="10,0" MinWidth="35">🡆</Button>
         </StackPanel>
     </Grid>
 </Window>
