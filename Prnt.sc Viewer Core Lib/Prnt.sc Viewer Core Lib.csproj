@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <RootNamespace>TehGM.PrntScViewer</RootNamespace>
+    <AssemblyName>PrntScViewer.Core</AssemblyName>
+    <PackageId>TehGM.PrntScViewer.Core</PackageId>
+    <Authors>TehGM</Authors>
+    <Product>Prnt.sc Viewer Core Library</Product>
+    <Copyright>Copyright (c) 2020 TehGM</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/TehGM/Prnt.sc-Viewer</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TehGM/Prnt.sc-Viewer</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.17" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>TehGM.PrntScViewer.WPF</RootNamespace>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>Prnt.sc Viewer</AssemblyName>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Authors>TehGM</Authors>
+    <Copyright>Copyright (c) 2020 TehGM</Copyright>
+    <PackageProjectUrl>https://github.com/TehGM/Prnt.sc-Viewer</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TehGM/Prnt.sc-Viewer</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageId>TehGM.PrntScViewer</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Prnt.sc Viewer Core Lib\Prnt.sc Viewer Core Lib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>

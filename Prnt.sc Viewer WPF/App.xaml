@@ -1,0 +1,74 @@
+﻿<Application x:Class="TehGM.PrntScViewer.WPF.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:TehGM.PrntScViewer.WPF"
+             StartupUri="MainWindow.xaml" Startup="Application_Startup">
+    <Application.Resources>
+        <Color x:Key="DefaultBorderColor">#2D2D30</Color>
+        <SolidColorBrush x:Key="DefaultBorderBrush" Color="{DynamicResource DefaultBorderColor}"/>
+        <Color x:Key="DefaultBackgroundColor">#232323</Color>
+        <SolidColorBrush x:Key="DefaultBackgroundBrush" Color="{DynamicResource DefaultBackgroundColor}"/>
+        <Color x:Key="DefaultBackgroundHoverColor">#333333</Color>
+        <SolidColorBrush x:Key="DefaultBackgroundHoverBrush" Color="{DynamicResource DefaultBackgroundHoverColor}"/>
+        <Color x:Key="DefaultForegroundColor">White</Color>
+        <SolidColorBrush x:Key="DefaultForegroundBrush" Color="{DynamicResource DefaultForegroundColor}"/>
+        <Color x:Key="DefaultForegroundHoverColor">#66CDAA</Color>
+        <SolidColorBrush x:Key="DefaultForegroundHoverBrush" Color="{DynamicResource DefaultForegroundHoverColor}"/>
+
+        <Style x:Key="DefaultColorScheme" TargetType="{x:Type Control}">
+            <Setter Property="Background" Value="{DynamicResource DefaultBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource DefaultForegroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource DefaultBorderBrush}" />
+        </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource DefaultColorScheme}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource DefaultBackgroundHoverBrush}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource DefaultForegroundHoverBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Window" BasedOn="{StaticResource DefaultColorScheme}"/>
+        <Style TargetType="TextBox" BasedOn="{StaticResource DefaultColorScheme}"/>
+        <Style TargetType="MenuItem" BasedOn="{StaticResource DefaultColorScheme}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type MenuItem}">
+                        <Border x:Name="Border" BorderThickness="0" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Padding="17,5" Width="{TemplateBinding Width}" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Shortcut" />
+                                    <ColumnDefinition Width="13" />
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter x:Name="HeaderHost" Grid.Column="0" ContentSource="Header" RecognizesAccessKey="True" SnapsToDevicePixels="True" />
+                                <TextBlock x:Name="InputGestureText" Grid.Column="1" Text="{TemplateBinding InputGestureText}" Margin="5,2,0,2" DockPanel.Dock="Right" Background="{TemplateBinding Background}"  />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter Property="Background" TargetName="Border" Value="{DynamicResource DefaultBackgroundHoverBrush}"/>
+                                <Setter Property="Background" TargetName="InputGestureText" Value="{DynamicResource DefaultBackgroundHoverBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource DefaultForegroundHoverBrush}"/>
+                                <Setter Property="Foreground" TargetName="InputGestureText" Value="{DynamicResource DefaultForegroundHoverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ContextMenu" BasedOn="{StaticResource DefaultColorScheme}">
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+    </Application.Resources>
+</Application>
