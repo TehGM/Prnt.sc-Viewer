@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:TehGM.PrntScViewer.WPF"
         mc:Ignorable="d"
         Title="TehGM's Prnt.sc Viewer" Height="450" Width="800" Loaded="Window_Loaded">
@@ -13,6 +14,7 @@
         </Grid.RowDefinitions>
 
         <Image x:Name="ImageBox" Grid.Row="0" Stretch="Fill"/>
+        <fa:ImageAwesome x:Name="LoadingSpinner" Grid.Row="0" Icon="CircleOutlineNotch" Spin="True" SpinDuration="3" MaxHeight="200px" Foreground="#BF808080" Visibility="Collapsed"/>
 
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <TextBlock Text="Screenshot ID" FontSize="20px" />

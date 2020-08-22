@@ -35,6 +35,7 @@ namespace TehGM.PrntScViewer.WPF
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            ShowLoadingSpinner();
             HttpClient client = App.HttpClientCache.GetClient();
             int statsScreenshotID = await client.DownloadScreenshotsUploadedCountAsync();
             this.CurrentScreenshotID = (ScreenshotID)statsScreenshotID;
@@ -58,6 +59,7 @@ namespace TehGM.PrntScViewer.WPF
 
         private async Task DisplayImage(ScreenshotID id)
         {
+            ShowLoadingSpinner();
             HttpClient client = App.HttpClientCache.GetClient();
             byte[] imageBytes = await client.DownloadScreenshotBytesAsync(new ScreenshotID(id));
             using (MemoryStream stream = new MemoryStream(imageBytes))
@@ -72,6 +74,12 @@ namespace TehGM.PrntScViewer.WPF
                 image.Freeze();
                 ImageBox.Source = image;
             }
+            HideLoadingSpinner();
         }
+
+        private void ShowLoadingSpinner()
+            => this.LoadingSpinner.Visibility = Visibility.Visible;
+        private void HideLoadingSpinner()
+            => this.LoadingSpinner.Visibility = Visibility.Collapsed;
     }
 }
