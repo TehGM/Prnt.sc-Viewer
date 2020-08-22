@@ -1,28 +1,60 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 
 namespace TehGM.PrntScViewer
 {
     public struct ScreenshotID : IEquatable<ScreenshotID>, IComparable<ScreenshotID>
     {
-        private const string _charset = "abcdefghijklmnopqrstuvwxyz0123456789";
+        private const string _charset = "0123456789abcdefghijklmnopqrstuvwxyz";
 
-        public string Value { get; }
+        public int NumericalValue { get; }
+        private readonly string _stringValue;
 
-        public ScreenshotID(string value)
+        public ScreenshotID(string stringValue)
         {
-            this.Value = value.ToLowerInvariant();
+            this._stringValue = stringValue.ToLowerInvariant();
+            this.NumericalValue = ToInt32(stringValue);
         }
 
-        #region String conversion
+        #region Conversion
         public override string ToString()
-            => Value;
+            => this._stringValue;
 
         public static implicit operator string(ScreenshotID id)
             => id.ToString();
 
         public static explicit operator ScreenshotID(string value)
             => new ScreenshotID(value);
+
+        public static explicit operator ScreenshotID(int value)
+        {
+            StringBuilder result = new StringBuilder();
+            while (value > _charset.Length)
+            {
+                int remainder = value % _charset.Length;
+                value /= _charset.Length;
+                result.Insert(0, _charset[remainder]);
+            }
+            if (value > 0)
+                result.Insert(0, _charset[value]);
+            return new ScreenshotID(result.ToString());
+        }
+
+        public static implicit operator int(ScreenshotID id)
+            => id.NumericalValue;
+
+        private static int ToInt32(string stringValue)
+        {
+            int result = 0;
+            for (int i = 0; i < stringValue.Length; i++)
+            {
+                int multiplier = (int)Math.Pow(_charset.Length, stringValue.Length - i - 1);
+                int index = _charset.IndexOf(stringValue[i]);
+                result += index * multiplier;
+            }
+            return result;
+        }
         #endregion
 
         #region Increment and Decrement
@@ -31,7 +63,7 @@ namespace TehGM.PrntScViewer
 
         public ScreenshotID Increment()
         {
-            char[] newValueChars = Value.ToCharArray();
+            char[] newValueChars = _stringValue.ToCharArray();
             IncrementAtIndex(newValueChars.Length - 1, ref newValueChars);
             return new ScreenshotID(new string(newValueChars));
         }
@@ -52,7 +84,7 @@ namespace TehGM.PrntScViewer
 
         public ScreenshotID Decrement()
         {
-            char[] newValueChars = Value.ToCharArray();
+            char[] newValueChars = _stringValue.ToCharArray();
             DecrementAtIndex(newValueChars.Length - 1, ref newValueChars);
             return new ScreenshotID(new string(newValueChars));
         }
@@ -74,10 +106,10 @@ namespace TehGM.PrntScViewer
             => obj is ScreenshotID iD && Equals(iD);
 
         public bool Equals(ScreenshotID other)
-            => Value == other.Value;
+            => NumericalValue == other.NumericalValue;
 
         public override int GetHashCode()
-            => Value.GetHashCode();
+            => NumericalValue.GetHashCode();
 
         public static bool operator ==(ScreenshotID left, ScreenshotID right)
             => left.Equals(right);
@@ -89,21 +121,21 @@ namespace TehGM.PrntScViewer
         #region IComparable
         public int CompareTo(ScreenshotID other)
         {
-            if (Value.Length > other.Value.Length)
+            if (_stringValue.Length > other._stringValue.Length)
                 return 1;
-            if (Value.Length < other.Value.Length)
+            if (_stringValue.Length < other._stringValue.Length)
                 return -1;
             if (Equals(other))
                 return 0;
 
-            for (int i = 0; i < Value.Length; i++)
+            for (int i = 0; i < _stringValue.Length; i++)
             {
-                int charComparison = Value[i].CompareTo(other.Value[i]);
+                int charComparison = _stringValue[i].CompareTo(other._stringValue[i]);
                 if (charComparison != 0)
                     return charComparison;
             }
 
-            throw new ArithmeticException($"Failed to compare '{Value}' to '{other.Value}'");
+            throw new ArithmeticException($"Failed to compare '{NumericalValue}' to '{other.NumericalValue}'");
         }
         #endregion
     }
