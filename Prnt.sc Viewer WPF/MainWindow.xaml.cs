@@ -14,8 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TehGM.PrntScViewer;
 
-namespace TehGM.PrntScBrowser.WPF
+namespace TehGM.PrntScViewer.WPF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

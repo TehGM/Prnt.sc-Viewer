@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
-    <RootNamespace>TehGM.PrntScBrowser</RootNamespace>
-    <AssemblyName>PrntScBrowser.Core</AssemblyName>
+    <RootNamespace>TehGM.PrntScViewer</RootNamespace>
+    <AssemblyName>PrntScViewer.Core</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

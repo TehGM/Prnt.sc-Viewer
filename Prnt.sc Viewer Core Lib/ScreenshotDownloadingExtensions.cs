@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TehGM.PrntScBrowser
+namespace TehGM.PrntScViewer
 {
     public static class ScreenshotDownloadingExtensions
     {

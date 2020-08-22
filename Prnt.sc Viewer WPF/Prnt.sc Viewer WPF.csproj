@@ -3,12 +3,13 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>TehGM.PrntScBrowser.WPF</RootNamespace>
+    <RootNamespace>TehGM.PrntScViewer.WPF</RootNamespace>
     <UseWPF>true</UseWPF>
+    <AssemblyName>Prnt.sc Viewer</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Prnt.sc Browser Core Lib\Prnt.sc Browser Core Lib.csproj" />
+    <ProjectReference Include="..\Prnt.sc Viewer Core Lib\Prnt.sc Viewer Core Lib.csproj" />
   </ItemGroup>
 
 </Project>

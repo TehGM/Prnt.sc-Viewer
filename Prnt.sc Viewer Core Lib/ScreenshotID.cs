@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace TehGM.PrntScBrowser
+namespace TehGM.PrntScViewer
 {
     public struct ScreenshotID : IEquatable<ScreenshotID>, IComparable<ScreenshotID>
     {
@@ -16,7 +16,7 @@ namespace TehGM.PrntScBrowser
 
         #region String conversion
         public override string ToString()
-            => this.Value;
+            => Value;
 
         public static implicit operator string(ScreenshotID id)
             => id.ToString();
@@ -31,7 +31,7 @@ namespace TehGM.PrntScBrowser
 
         public ScreenshotID Increment()
         {
-            char[] newValueChars = this.Value.ToCharArray();
+            char[] newValueChars = Value.ToCharArray();
             IncrementAtIndex(newValueChars.Length - 1, ref newValueChars);
             return new ScreenshotID(new string(newValueChars));
         }
@@ -52,7 +52,7 @@ namespace TehGM.PrntScBrowser
 
         public ScreenshotID Decrement()
         {
-            char[] newValueChars = this.Value.ToCharArray();
+            char[] newValueChars = Value.ToCharArray();
             DecrementAtIndex(newValueChars.Length - 1, ref newValueChars);
             return new ScreenshotID(new string(newValueChars));
         }
@@ -77,7 +77,7 @@ namespace TehGM.PrntScBrowser
             => Value == other.Value;
 
         public override int GetHashCode()
-            => this.Value.GetHashCode();
+            => Value.GetHashCode();
 
         public static bool operator ==(ScreenshotID left, ScreenshotID right)
             => left.Equals(right);
@@ -89,21 +89,21 @@ namespace TehGM.PrntScBrowser
         #region IComparable
         public int CompareTo(ScreenshotID other)
         {
-            if (this.Value.Length > other.Value.Length)
+            if (Value.Length > other.Value.Length)
                 return 1;
-            if (this.Value.Length < other.Value.Length)
+            if (Value.Length < other.Value.Length)
                 return -1;
-            if (this.Equals(other))
+            if (Equals(other))
                 return 0;
 
-            for (int i = 0; i < this.Value.Length; i++)
+            for (int i = 0; i < Value.Length; i++)
             {
-                int charComparison = this.Value[i].CompareTo(other.Value[i]);
+                int charComparison = Value[i].CompareTo(other.Value[i]);
                 if (charComparison != 0)
                     return charComparison;
             }
 
-            throw new ArithmeticException($"Failed to compare '{this.Value}' to '{other.Value}'");
+            throw new ArithmeticException($"Failed to compare '{Value}' to '{other.Value}'");
         }
         #endregion
     }
