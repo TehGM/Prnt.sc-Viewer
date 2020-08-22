@@ -13,7 +13,7 @@
             <RowDefinition Height="30px"/>
         </Grid.RowDefinitions>
 
-        <Image x:Name="ImageBox" Grid.Row="0" Stretch="Fill"/>
+        <Image x:Name="ImageBox" Grid.Row="0" Stretch="Uniform"/>
         <fa:ImageAwesome x:Name="LoadingSpinner" Grid.Row="0" Icon="CircleOutlineNotch" Spin="True" SpinDuration="3" MaxHeight="200px" Foreground="#BF808080" Visibility="Collapsed"/>
 
         <StackPanel Orientation="Horizontal" Grid.Row="1">
